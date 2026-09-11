@@ -1,0 +1,16 @@
+<Solution>
+  <Folder Name="/Solution Items/">
+    <File Path=".gitignore" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/OrderManagement.Api/OrderManagement.Api.csproj" Id="f055f10c-9dcc-4ef8-850d-ece65d45bdbe" />
+    <Project Path="src/OrderManagement.Application/OrderManagement.Application.csproj" Id="46b85531-7bd3-41fa-9f21-8821851f8c9d" />
+    <Project Path="src/OrderManagement.Domain/OrderManagement.Domain.csproj" Id="18ce15d2-4dbd-4f96-ab06-27aaad518d07" />
+    <Project Path="src/OrderManagement.Infrastructure/OrderManagement.Infrastructure.csproj" Id="da67fb39-c7f0-4318-8e72-56c9b919fcae" />
+  </Folder>
+  <Folder Name="/tests/">
+    <Project Path="tests/OrderManagement.Application.Tests/OrderManagement.Application.Tests.csproj" Id="1a8f6ce1-eca2-4ab4-b89f-1e8d2119f805" />
+    <Project Path="tests/OrderManagement.Domain.Tests/OrderManagement.Domain.Tests.csproj" Id="e85e028c-789f-4b21-b94d-d327c1fc4819" />
+    <Project Path="tests/OrderManagement.IntegrationTests/OrderManagement.IntegrationTests.csproj" Id="300b930c-744e-4dfa-b591-8f9895e024e1" />
+  </Folder>
+</Solution>

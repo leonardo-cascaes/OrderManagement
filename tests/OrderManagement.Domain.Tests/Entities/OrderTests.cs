@@ -18,5 +18,19 @@ namespace OrderManagement.Domain.Tests.Entities
             // Assert
             order.Status.Should().Be(OrderStatus.Pending);
         }
+
+        [Fact]
+        public void Should_not_create_order_without_customer()
+        {
+            // Arrange
+            var customerId = Guid.Empty;
+
+            // Act
+            Action act = () => new Order(customerId);
+
+            // Assert
+            act.Should().Throw<ArgumentException>();
+        }
+
     }
 }

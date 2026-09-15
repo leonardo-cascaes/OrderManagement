@@ -10,6 +10,13 @@ namespace OrderManagement.Domain.Entities
 
         public Order(Guid customerId)
         {
+            if (customerId == Guid.Empty)
+            {
+                throw new ArgumentException(
+                    "CustomerId cannot be empty.",
+                    nameof(customerId));
+            }
+
             CustomerId = customerId;
             Status = OrderStatus.Pending;
         }

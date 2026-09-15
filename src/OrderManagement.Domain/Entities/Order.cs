@@ -9,6 +9,7 @@ namespace OrderManagement.Domain.Entities
         public OrderStatus Status { get; private set; }
         private readonly List<OrderItem> _orderItems = new();
         public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
+        public decimal Total => _orderItems.Sum(item => item.Quantity * item.UnitPrice);
 
         public Order(Guid customerId)
         {

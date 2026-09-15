@@ -7,6 +7,8 @@ namespace OrderManagement.Domain.Entities
     {
         public Guid CustomerId { get; private set; }
         public OrderStatus Status { get; private set; }
+        private readonly List<OrderItem> _orderItems = new();
+        public IReadOnlyCollection<OrderItem> OrderItems => _orderItems;
 
         public Order(Guid customerId)
         {
@@ -19,6 +21,11 @@ namespace OrderManagement.Domain.Entities
 
             CustomerId = customerId;
             Status = OrderStatus.Pending;
+        }
+
+        public void AddItem(Guid productId, int quantity, decimal unitPrice)
+        {
+            _orderItems.Add(new OrderItem(productId, quantity, unitPrice));
         }
     }
 }

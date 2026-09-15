@@ -10,6 +10,11 @@ namespace OrderManagement.Domain.Entities
 
         public OrderItem(Guid productId, int quantity, decimal unitPrice)
         {
+            if (quantity <= 0)
+            {
+                throw new ArgumentException("Quantity cannot be zero or negative value.", nameof(quantity));
+            }
+
             ProductId = productId;
             Quantity = quantity;
             UnitPrice = unitPrice;

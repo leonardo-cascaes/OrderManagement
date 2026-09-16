@@ -14,11 +14,7 @@ namespace OrderManagement.Domain.Entities
         public Order(Guid customerId)
         {
             if (customerId == Guid.Empty)
-            {
-                throw new ArgumentException(
-                    "CustomerId cannot be empty.",
-                    nameof(customerId));
-            }
+                throw new ArgumentException("CustomerId cannot be empty.", nameof(customerId));
 
             CustomerId = customerId;
             Status = OrderStatus.Pending;
@@ -31,16 +27,25 @@ namespace OrderManagement.Domain.Entities
 
         public void Confirm()
         {
+            if (Status != OrderStatus.Pending)
+                throw new InvalidOperationException("Only pending orders can be confirmed.");
+
             Status = OrderStatus.Confirmed;
         }
 
         public void Cancel()
         {
+            if (Status != OrderStatus.Pending)
+                throw new InvalidOperationException("Only pending orders can be cancelled.");
+
             Status = OrderStatus.Cancelled;
         }
 
         public void Complete()
         {
+            if (Status != OrderStatus.Confirmed)
+                throw new InvalidOperationException("Only confirmed orders can be completed.");
+
             Status = OrderStatus.Completed;
         }
     }

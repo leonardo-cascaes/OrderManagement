@@ -46,5 +46,135 @@ namespace OrderManagement.Domain.Tests.Entities
             // Assert
             order.Status.Should().Be(OrderStatus.Completed);
         }
+
+        [Fact]
+        public void Should_not_complete_pending_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+
+            // Act
+            Action act = () => order.Complete();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_confirm_already_confirmed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+
+            order.Confirm();
+
+            // Act
+            Action act = () => order.Confirm();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_cancel_confirmed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+
+            order.Confirm();
+
+            // Act
+            Action act = () => order.Cancel();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_confirm_cancelled_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Cancel();
+
+            // Act
+            Action act = () => order.Confirm();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_cancel_cancelled_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Cancel();
+
+            // Act
+            Action act = () => order.Cancel();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_complete_cancelled_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Cancel();
+
+            // Act
+            Action act = () => order.Complete();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_confirm_completed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Confirm();
+            order.Complete();
+
+            // Act
+            Action act = () => order.Confirm();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_cancel_completed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Confirm();
+            order.Complete();
+
+            // Act
+            Action act = () => order.Cancel();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_complete_completed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Confirm();
+            order.Complete();
+
+            // Act
+            Action act = () => order.Complete();
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
     }
 }

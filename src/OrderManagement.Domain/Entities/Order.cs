@@ -22,6 +22,9 @@ namespace OrderManagement.Domain.Entities
 
         public void AddItem(Guid productId, int quantity, decimal unitPrice)
         {
+            if (Status != OrderStatus.Pending)
+                throw new InvalidOperationException("Only pending orders can add items.");
+
             _orderItems.Add(new OrderItem(productId, quantity, unitPrice));
         }
 

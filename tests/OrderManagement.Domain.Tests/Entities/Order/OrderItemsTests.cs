@@ -26,5 +26,57 @@ namespace OrderManagement.Domain.Tests.Entities
             item.Quantity.Should().Be(2);
             item.UnitPrice.Should().Be(100m);
         }
+
+        [Fact]
+        public void Should_not_add_item_to_confirmed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Confirm();
+
+            // Act
+            Action act = () => order.AddItem(
+                Guid.NewGuid(),
+                2,
+                10m);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_add_item_to_cancelled_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Cancel();
+
+            // Act
+            Action act = () => order.AddItem(
+                Guid.NewGuid(),
+                2,
+                10m);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
+
+        [Fact]
+        public void Should_not_add_item_to_completed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+            order.Confirm();
+            order.Complete();
+
+            // Act
+            Action act = () => order.AddItem(
+                Guid.NewGuid(),
+                2,
+                10m);
+
+            // Assert
+            act.Should().Throw<InvalidOperationException>();
+        }
     }
 }

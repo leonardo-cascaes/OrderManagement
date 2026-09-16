@@ -3,7 +3,7 @@ using OrderManagement.Domain.Entities;
 
 namespace OrderManagement.Domain.Tests.Entities
 {
-    public class OrderItemTests
+    public class OrderItemValidationTests
     {
         [Fact]
         public void Should_not_create_order_item_with_zero_quantity()

@@ -18,5 +18,18 @@ namespace OrderManagement.Domain.Tests.Entities
             // Assert
             order.Status.Should().Be(OrderStatus.Confirmed);
         }
+
+        [Fact]
+        public void Should_cancel_pending_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+
+            // Act
+            order.Cancel();
+
+            // Assert
+            order.Status.Should().Be(OrderStatus.Cancelled);
+        }
     }
 }

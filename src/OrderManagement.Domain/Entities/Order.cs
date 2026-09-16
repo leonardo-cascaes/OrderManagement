@@ -38,5 +38,10 @@ namespace OrderManagement.Domain.Entities
         {
             Status = OrderStatus.Cancelled;
         }
+
+        public void Complete()
+        {
+            Status = OrderStatus.Completed;
+        }
     }
 }

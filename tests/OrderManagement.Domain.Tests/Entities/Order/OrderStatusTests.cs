@@ -31,5 +31,20 @@ namespace OrderManagement.Domain.Tests.Entities
             // Assert
             order.Status.Should().Be(OrderStatus.Cancelled);
         }
+
+        [Fact]
+        public void Should_complete_confirmed_order()
+        {
+            // Arrange
+            var order = new Order(Guid.NewGuid());
+
+            order.Confirm();
+
+            // Act
+            order.Complete();
+
+            // Assert
+            order.Status.Should().Be(OrderStatus.Completed);
+        }
     }
 }

@@ -28,5 +28,10 @@ namespace OrderManagement.Domain.Entities
         {
             _orderItems.Add(new OrderItem(productId, quantity, unitPrice));
         }
+
+        public void Confirm()
+        {
+            Status = OrderStatus.Confirmed;
+        }
     }
 }

@@ -76,6 +76,38 @@ namespace OrderManagement.Application.Tests.Orders
             result.Error.Should().Be("Product not found.");
         }
 
+        [Fact]
+        public async Task Should_create_order_with_product_item()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            var product = new Product("Notebook", 3500m, 10);
+
+            var customerRepository = new CustomerRepositoryStub(customer);
+
+            var productRepository = new ProductRepositoryStub(product);
+
+            var handler = CreateHandler(customerRepository, productRepository);
+
+            var command = new CreateOrderCommand(customer.Id, product.Id, 2);
+
+            // Act
+            var result = await handler.Handle(command, TestContext.Current.CancellationToken);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            result.Value.Should().NotBeNull();
+
+            result.Value!.OrderItems.Should().ContainSingle();
+
+            var item = result.Value.OrderItems.Single();
+
+            item.ProductId.Should().Be(product.Id);
+            item.Quantity.Should().Be(2);
+            item.UnitPrice.Should().Be(3500m);
+        }
+
         private static CreateOrderHandler CreateHandler(
             ICustomerRepository? customerRepository = null,
             IProductRepository? productRepository = null

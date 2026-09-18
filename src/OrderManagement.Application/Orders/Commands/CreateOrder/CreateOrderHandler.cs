@@ -32,6 +32,8 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
 
             var order = new Order(customer.Id);
 
+            order.AddItem(product.Id, command.Quantity, product.Price);
+
             return Result<Order>.Success(order);
         }
     }

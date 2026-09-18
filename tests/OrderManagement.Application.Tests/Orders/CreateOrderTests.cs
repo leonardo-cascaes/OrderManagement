@@ -108,6 +108,78 @@ namespace OrderManagement.Application.Tests.Orders
             item.UnitPrice.Should().Be(3500m);
         }
 
+
+        [Fact]
+        public async Task Should_not_create_order_when_product_stock_is_insufficient()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            var product = new Product("Notebook", 3500m, 5);
+
+            var customerRepository = new CustomerRepositoryStub(customer);
+
+            var productRepository = new ProductRepositoryStub(product);
+
+            var handler = CreateHandler(customerRepository, productRepository);
+
+            var command = new CreateOrderCommand(customer.Id, product.Id, 6);
+
+            // Act
+            var act = async () => await handler.Handle(command, TestContext.Current.CancellationToken);
+
+            // Assert
+            await act.Should().ThrowAsync<InvalidOperationException>();
+        }
+
+        [Fact]
+        public async Task Should_decrease_product_stock_when_order_is_created()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            var product = new Product("Notebook", 3500m, 10);
+
+            var customerRepository = new CustomerRepositoryStub(customer);
+
+            var productRepository = new ProductRepositoryStub(product);
+
+            var handler = CreateHandler(customerRepository, productRepository);
+
+            var command = new CreateOrderCommand(customer.Id, product.Id, 3);
+
+            // Act
+            var result = await handler.Handle(command, TestContext.Current.CancellationToken);
+
+            // Assert
+            result.IsSuccess.Should().BeTrue();
+            product.Stock.Should().Be(7);
+        }
+
+        [Fact]
+        public async Task Should_not_create_order_with_invalid_quantity()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            var product = new Product("Notebook", 3500m, 10);
+
+            var customerRepository = new CustomerRepositoryStub(customer);
+
+            var productRepository = new ProductRepositoryStub(product);
+
+            var handler = CreateHandler(customerRepository, productRepository);
+
+            var command = new CreateOrderCommand(customer.Id, product.Id, 0);
+
+            // Act
+            var result = await handler.Handle(command, TestContext.Current.CancellationToken);
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Quantity must be greater than zero.");
+        }
+
         private static CreateOrderHandler CreateHandler(
             ICustomerRepository? customerRepository = null,
             IProductRepository? productRepository = null

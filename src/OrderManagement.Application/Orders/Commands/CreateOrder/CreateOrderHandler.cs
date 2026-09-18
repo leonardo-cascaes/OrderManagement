@@ -20,6 +20,9 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
 
         public async Task<Result<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken = default)
         {
+            if (command.Quantity <= 0)
+                return Result<Order>.Failure("Quantity must be greater than zero.");
+
             var customer = await _customerRepository.GetByIdAsync(command.CustomerId, cancellationToken);
 
             if (customer is null)
@@ -31,6 +34,8 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
                 return Result<Order>.Failure("Product not found.");
 
             var order = new Order(customer.Id);
+
+            product.RemoveStock(command.Quantity);
 
             order.AddItem(product.Id, command.Quantity, product.Price);
 

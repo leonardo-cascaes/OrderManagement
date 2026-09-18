@@ -14,10 +14,11 @@ namespace OrderManagement.Application.Tests.Orders
             // Arrange
             var customerId = Guid.NewGuid();
 
-            var repository = new CustomerRepositoryStub();
-            var handler = new CreateOrderHandler(repository);
+            var customerRepository = new CustomerRepositoryStub();
 
-            var command = new CreateOrderCommand(customerId);
+            var handler = CreateHandler(customerRepository);
+
+            var command = new CreateOrderCommand(customerId, Guid.NewGuid(), 1);
 
             // Act
             var result = await handler.Handle(command, TestContext.Current.CancellationToken);
@@ -31,14 +32,15 @@ namespace OrderManagement.Application.Tests.Orders
         public async Task Should_create_order_when_customer_exists()
         {
             // Arrange
-            var customer = new Customer(
-                "Leonardo",
-                "leonardo@email.com");
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+            var product = new Product("Notebook", 3500m, 10);
 
-            var repository = new CustomerRepositoryStub(customer);
-            var handler = new CreateOrderHandler(repository);
+            var customerRepository = new CustomerRepositoryStub(customer);
+            var productRepository = new ProductRepositoryStub(product);
 
-            var command = new CreateOrderCommand(customer.Id);
+            var handler = CreateHandler(customerRepository, productRepository);
+
+            var command = new CreateOrderCommand(customer.Id, Guid.NewGuid(), 1);
 
             // Act
             var result = await handler.Handle(command, TestContext.Current.CancellationToken);
@@ -48,6 +50,43 @@ namespace OrderManagement.Application.Tests.Orders
             result.Value.Should().NotBeNull();
             result.Value!.CustomerId.Should().Be(customer.Id);
             result.Value.Status.Should().Be(OrderStatus.Pending);
+        }
+
+        [Fact]
+        public async Task Should_not_create_order_when_product_does_not_exist()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            var productId = Guid.NewGuid();
+
+            var customerRepository = new CustomerRepositoryStub(customer);
+            var productRepository = new ProductRepositoryStub();
+
+            var handler = CreateHandler(customerRepository, productRepository);
+
+            var command = new CreateOrderCommand(customer.Id, productId, 2);
+
+            // Act
+            var result = await handler.Handle(command, TestContext.Current.CancellationToken);
+
+
+            // Assert
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Product not found.");
+        }
+
+        private static CreateOrderHandler CreateHandler(
+            ICustomerRepository? customerRepository = null,
+            IProductRepository? productRepository = null
+        )
+        {
+            customerRepository ??= new CustomerRepositoryStub();
+            productRepository ??= new ProductRepositoryStub();
+
+            return new CreateOrderHandler(
+                customerRepository,
+                productRepository);
         }
 
         private sealed class CustomerRepositoryStub : ICustomerRepository
@@ -62,6 +101,21 @@ namespace OrderManagement.Application.Tests.Orders
             public Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(_customer);
+            }
+        }
+
+        private sealed class ProductRepositoryStub : IProductRepository
+        {
+            private readonly Product? _product;
+
+            public ProductRepositoryStub(Product? product = null)
+            {
+                _product = product;
+            }
+
+            public Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult(_product);
             }
         }
     }

@@ -84,5 +84,22 @@ namespace OrderManagement.Domain.Tests.Entities
             item.ProductId.Should().Be(productId);
             item.UnitPrice.Should().Be(100m);
         }
+
+        [Fact]
+        public void Should_not_create_order_item_without_product()
+        {
+            // Arrange
+            var quantity = 2;
+            var unitPrice = 10m;
+
+            // Act
+            Action act = () => new OrderItem(
+                Guid.Empty,
+                quantity,
+                unitPrice);
+
+            // Assert
+            act.Should().Throw<ArgumentException>();
+        }
     }
 }

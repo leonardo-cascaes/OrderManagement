@@ -10,6 +10,9 @@ namespace OrderManagement.Domain.Entities
 
         public OrderItem(Guid productId, int quantity, decimal unitPrice)
         {
+            if (productId == Guid.Empty)
+                throw new ArgumentException("ProductId cannon be empty.", nameof(productId));
+
             if (quantity <= 0)
                 throw new ArgumentException("Quantity cannot be zero or negative value.", nameof(quantity));
 

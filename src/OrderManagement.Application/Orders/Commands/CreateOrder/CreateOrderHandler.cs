@@ -1,10 +1,12 @@
-﻿using OrderManagement.Application.Common;
+﻿using MediatR;
+using OrderManagement.Application.Common;
 using OrderManagement.Application.Interfaces.Repositories;
 using OrderManagement.Domain.Entities;
 
 namespace OrderManagement.Application.Orders.Commands.CreateOrder
 {
     public class CreateOrderHandler
+        : IRequestHandler<CreateOrderCommand, Result<Order>>
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IProductRepository _productRepository;
@@ -18,7 +20,7 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
             _productRepository = productRepository;
         }
 
-        public async Task<Result<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken = default)
+        public async Task<Result<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
             if (command.Quantity <= 0)
                 return Result<Order>.Failure("Quantity must be greater than zero.");

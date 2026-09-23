@@ -4,5 +4,9 @@ using OrderManagement.Domain.Entities;
 
 namespace OrderManagement.Application.Orders.Commands.CreateOrder
 {
-    public record CreateOrderCommand(Guid CustomerId, Guid ProductId, int Quantity) : IRequest<Result<Order>>;
+    public record CreateOrderCommand(
+        Guid CustomerId, 
+        Guid ProductId, 
+        int Quantity
+    ) : IRequest<Result<Order>>;
 }

@@ -1,11 +1,9 @@
 ﻿using FluentAssertions;
 using MediatR;
-using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
-using OrderManagement.IntegrationTests.Infrastructure;
 
-namespace OrderManagement.IntegrationTests
+namespace OrderManagement.IntegrationTests.Infrastructure
 {
     public class DependencyInjectionTests
         : IClassFixture<CustomWebApplicationFactory>

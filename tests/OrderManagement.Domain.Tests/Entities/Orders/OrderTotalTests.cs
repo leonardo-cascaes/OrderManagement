@@ -1,7 +1,7 @@
 ﻿using FluentAssertions;
 using OrderManagement.Domain.Entities;
 
-namespace OrderManagement.Domain.Tests.Entities
+namespace OrderManagement.Domain.Tests.Entities.Orders
 {
     public class OrderTotalTests
     {

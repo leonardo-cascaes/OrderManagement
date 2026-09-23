@@ -2,7 +2,7 @@
 using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.Enums;
 
-namespace OrderManagement.Domain.Tests.Entities
+namespace OrderManagement.Domain.Tests.Entities.Orders
 {
     public class OrderStatusTests
     {

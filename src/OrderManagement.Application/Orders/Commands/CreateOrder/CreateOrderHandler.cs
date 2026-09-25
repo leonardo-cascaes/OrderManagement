@@ -23,9 +23,6 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
 
         public async Task<Result<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
         {
-            if (command.Quantity <= 0)
-                return Result<Order>.Failure("Quantity must be greater than zero.", ResultErrorType.Validation);
-
             var customer = await _customerRepository.GetByIdAsync(command.CustomerId, cancellationToken);
 
             if (customer is null)

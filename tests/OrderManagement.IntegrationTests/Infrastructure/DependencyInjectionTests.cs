@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
@@ -44,6 +45,23 @@ namespace OrderManagement.IntegrationTests.Infrastructure
             // Assert
             result.IsSuccess.Should().BeFalse();
             result.Error.Should().Be("Customer not found.");
+        }
+
+        [Fact]
+        public async Task Should_validate_command_before_handler()
+        {
+            // Arrange
+            using var scope = _factory.Services.CreateScope();
+
+            var sender = scope.ServiceProvider.GetRequiredService<ISender>();
+
+            var command = new CreateOrderCommand(Guid.NewGuid(), Guid.NewGuid(), 0);
+
+            // Act
+            Func<Task> act = () => sender.Send(command, TestContext.Current.CancellationToken);
+
+            // Assert
+            await act.Should().ThrowAsync<ValidationException>();
         }
     }
 }

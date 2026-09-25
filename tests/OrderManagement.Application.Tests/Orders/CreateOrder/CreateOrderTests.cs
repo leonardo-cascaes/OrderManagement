@@ -5,7 +5,7 @@ using OrderManagement.Application.Orders.Commands.CreateOrder;
 using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.Enums;
 
-namespace OrderManagement.Application.Tests.Orders
+namespace OrderManagement.Application.Tests.Orders.CreateOrder
 {
     public class CreateOrderTests
     {
@@ -144,7 +144,7 @@ namespace OrderManagement.Application.Tests.Orders
             var product = new Product("Notebook", 3500m, 10);
 
             var customerRepository = new CustomerRepositoryStub(customer);
-
+            
             var productRepository = new ProductRepositoryStub(product);
 
             var handler = CreateHandler(customerRepository, productRepository);
@@ -157,30 +157,6 @@ namespace OrderManagement.Application.Tests.Orders
             // Assert
             result.IsSuccess.Should().BeTrue();
             product.Stock.Should().Be(7);
-        }
-
-        [Fact]
-        public async Task Should_not_create_order_with_invalid_quantity()
-        {
-            // Arrange
-            var customer = new Customer("Leonardo", "leonardo@email.com");
-
-            var product = new Product("Notebook", 3500m, 10);
-
-            var customerRepository = new CustomerRepositoryStub(customer);
-
-            var productRepository = new ProductRepositoryStub(product);
-
-            var handler = CreateHandler(customerRepository, productRepository);
-
-            var command = new CreateOrderCommand(customer.Id, product.Id, 0);
-
-            // Act
-            var result = await handler.Handle(command, TestContext.Current.CancellationToken);
-
-            // Assert
-            result.IsSuccess.Should().BeFalse();
-            result.Error.Should().Be("Quantity must be greater than zero.");
         }
 
         private static CreateOrderHandler CreateHandler(

@@ -1,4 +1,5 @@
 ﻿using OrderManagement.Domain.Common;
+using OrderManagement.Domain.Exceptions;
 
 namespace OrderManagement.Domain.Entities
 {
@@ -38,7 +39,7 @@ namespace OrderManagement.Domain.Entities
                 throw new ArgumentException("Quantity must be greater than zero.", nameof(quantity));
 
             if (quantity > Stock)
-                throw new InvalidOperationException("Insufficient stock.");
+                throw new InsufficientStockException();
 
             Stock -= quantity;
         }

@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using OrderManagement.Api.Mappings;
 using OrderManagement.Api.Models.Orders;
+using OrderManagement.Application.Common;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
 
 namespace OrderManagement.Api.Controllers
@@ -26,7 +27,15 @@ namespace OrderManagement.Api.Controllers
             var result = await _sender.Send(command, cancellationToken);
 
             if (!result.IsSuccess)
-                return NotFound(result.Error);
+            {
+                return result.ErrorType switch
+                {
+                    ResultErrorType.Validation => BadRequest(result.Error),
+                    ResultErrorType.NotFound => NotFound(result.Error),
+                    ResultErrorType.Conflict => Conflict(result.Error),
+                    _ => StatusCode(StatusCodes.Status500InternalServerError)
+                };
+            }
 
             return Created($"/api/orders/{result.Value!.Id}", result.Value.ToResponse());
         }

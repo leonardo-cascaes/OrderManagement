@@ -1,4 +1,5 @@
 ﻿using FluentAssertions;
+using OrderManagement.Application.Common;
 using OrderManagement.Application.Interfaces.Repositories;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
 using OrderManagement.Domain.Entities;
@@ -126,10 +127,12 @@ namespace OrderManagement.Application.Tests.Orders
             var command = new CreateOrderCommand(customer.Id, product.Id, 6);
 
             // Act
-            var act = async () => await handler.Handle(command, TestContext.Current.CancellationToken);
+            var result = await handler.Handle(command, TestContext.Current.CancellationToken);
 
             // Assert
-            await act.Should().ThrowAsync<InvalidOperationException>();
+            result.IsSuccess.Should().BeFalse();
+            result.Error.Should().Be("Insufficient stock.");
+            result.ErrorType.Should().Be(ResultErrorType.Conflict);
         }
 
         [Fact]

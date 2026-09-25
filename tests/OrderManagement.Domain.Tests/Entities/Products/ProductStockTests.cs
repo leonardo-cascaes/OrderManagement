@@ -1,5 +1,6 @@
 ﻿using FluentAssertions;
 using OrderManagement.Domain.Entities;
+using OrderManagement.Domain.Exceptions;
 
 namespace OrderManagement.Domain.Tests.Entities.Products
 {
@@ -67,7 +68,7 @@ namespace OrderManagement.Domain.Tests.Entities.Products
             Action act = () => product.RemoveStock(11);
 
             // Assert
-            act.Should().Throw<InvalidOperationException>();
+            act.Should().Throw<InsufficientStockException>();
         }
 
         [Fact]

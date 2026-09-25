@@ -50,14 +50,9 @@ namespace OrderManagement.IntegrationTests.Orders
         public async Task Should_create_order_when_customer_and_product_exist()
         {
             // Arrange
-            var customer = new Customer(
-                "Leonardo",
-                "leonardo@email.com");
+            var customer = new Customer("Leonardo", "leonardo@email.com");
 
-            var product = new Product(
-                "Notebook",
-                3500m,
-                10);
+            var product = new Product("Notebook", 3500m, 10);
 
             using var factory = _factory.WithWebHostBuilder(builder =>
             {
@@ -102,6 +97,98 @@ namespace OrderManagement.IntegrationTests.Orders
             item.ProductId.Should().Be(product.Id);
             item.Quantity.Should().Be(2);
             item.UnitPrice.Should().Be(3500m);
+        }
+
+        [Fact]
+        public async Task Should_return_bad_request_when_quantity_is_invalid()
+        {
+            // Arrange
+            using var client = _factory.CreateClient();
+
+            var request = new
+            {
+                customerId = Guid.NewGuid(),
+                productId = Guid.NewGuid(),
+                quantity = 0
+            };
+
+            // Act
+            var response = await client.PostAsJsonAsync("/api/orders", request, TestContext.Current.CancellationToken);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.BadRequest);
+        }
+
+        [Fact]
+        public async Task Should_return_not_found_when_product_does_not_exist()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            using var factory = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.RemoveAll<ICustomerRepository>();
+                    services.RemoveAll<IProductRepository>();
+
+                    services.AddScoped<ICustomerRepository>(_ => new CustomerRepositoryStub(customer));
+
+                    services.AddScoped<IProductRepository>(_ => new ProductRepositoryStub());
+                });
+            });
+
+            using var client = factory.CreateClient();
+
+            var request = new
+            {
+                customerId = customer.Id,
+                productId = Guid.NewGuid(),
+                quantity = 1
+            };
+
+            // Act
+            var response = await client.PostAsJsonAsync("/api/orders", request, TestContext.Current.CancellationToken);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.NotFound);
+        }
+
+        [Fact]
+        public async Task Should_return_conflict_when_product_stock_is_insufficient()
+        {
+            // Arrange
+            var customer = new Customer("Leonardo", "leonardo@email.com");
+
+            var product = new Product("Notebook", 3500m, 5);
+
+            using var factory = _factory.WithWebHostBuilder(builder =>
+            {
+                builder.ConfigureTestServices(services =>
+                {
+                    services.RemoveAll<ICustomerRepository>();
+                    services.RemoveAll<IProductRepository>();
+
+                    services.AddScoped<ICustomerRepository>(_ => new CustomerRepositoryStub(customer));
+
+                    services.AddScoped<IProductRepository>(_ => new ProductRepositoryStub(product));
+                });
+            });
+
+            using var client = factory.CreateClient();
+
+            var request = new
+            {
+                customerId = customer.Id,
+                productId = product.Id,
+                quantity = 6
+            };
+
+            // Act
+            var response = await client.PostAsJsonAsync("/api/orders", request, TestContext.Current.CancellationToken);
+
+            // Assert
+            response.StatusCode.Should().Be(HttpStatusCode.Conflict);
         }
     }
 }

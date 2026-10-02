@@ -22,7 +22,7 @@ builder.Services.AddMediatR(cfg =>
     cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
 });
 
-builder.Services.AddScoped<IValidator<CreateOrderCommand>, CreateOrderValidator>();
+builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderValidator>();
 
 var app = builder.Build();
 

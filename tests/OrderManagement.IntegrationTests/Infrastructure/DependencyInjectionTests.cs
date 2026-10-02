@@ -63,5 +63,19 @@ namespace OrderManagement.IntegrationTests.Infrastructure
             // Assert
             await act.Should().ThrowAsync<ValidationException>();
         }
+
+        [Fact]
+        public void Should_resolve_create_order_validator()
+        {
+            // Arrange
+            using var scope = _factory.Services.CreateScope();
+
+            // Act
+            var validator = scope.ServiceProvider.GetRequiredService<IValidator<CreateOrderCommand>>();
+
+            // Assert
+            validator.Should().NotBeNull();
+            validator.Should().BeOfType<CreateOrderValidator>();
+        }
     }
 }

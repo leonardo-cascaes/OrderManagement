@@ -2,7 +2,6 @@
 {
     public enum ResultErrorType
     {
-        Validation,
         NotFound,
         Conflict
     }

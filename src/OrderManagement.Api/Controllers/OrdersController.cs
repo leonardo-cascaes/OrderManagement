@@ -30,7 +30,6 @@ namespace OrderManagement.Api.Controllers
             {
                 return result.ErrorType switch
                 {
-                    ResultErrorType.Validation => BadRequest(result.Error),
                     ResultErrorType.NotFound => NotFound(result.Error),
                     ResultErrorType.Conflict => Conflict(result.Error),
                     _ => StatusCode(StatusCodes.Status500InternalServerError)

@@ -1,7 +1,5 @@
-using FluentValidation;
 using OrderManagement.Api.Exceptions;
-using OrderManagement.Application.Common.Behaviors;
-using OrderManagement.Application.Orders.Commands.CreateOrder;
+using OrderManagement.Application.DependencyInjection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,18 +9,10 @@ builder.Services.AddControllers();
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddProblemDetails();
 builder.Services.AddExceptionHandler<ValidationExceptionHandler>();
 
-builder.Services.AddProblemDetails();
-
-builder.Services.AddMediatR(cfg =>
-{
-    cfg.RegisterServicesFromAssemblyContaining<CreateOrderHandler>();
-
-    cfg.AddOpenBehavior(typeof(ValidationBehavior<,>));
-});
-
-builder.Services.AddValidatorsFromAssemblyContaining<CreateOrderValidator>();
+builder.Services.AddApplication();
 
 var app = builder.Build();
 

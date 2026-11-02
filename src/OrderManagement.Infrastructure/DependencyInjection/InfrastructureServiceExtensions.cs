@@ -1,7 +1,11 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using OrderManagement.Application.Interfaces.Repositories;
+using OrderManagement.Application.Persistence;
 using OrderManagement.Infrastructure.Persistence;
+using OrderManagement.Infrastructure.Persistence.Repositories;
+using OrderManagement.Application.Common.Exceptions;
 
 namespace OrderManagement.Infrastructure.DependencyInjection
 {
@@ -16,6 +20,12 @@ namespace OrderManagement.Infrastructure.DependencyInjection
                 ?? throw new InvalidOperationException("Connection string 'OrderManagement' was not found.");
 
             services.AddDbContext<OrderManagementDbContext>(options => options.UseNpgsql(connectionString));
+
+            services.AddScoped<IUnitOfWork>(provider => provider.GetRequiredService<OrderManagementDbContext>());
+
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<IOrderRepository, OrderRepository>();
 
             return services;
         }

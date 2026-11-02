@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Design;
+using OrderManagement.Application.Common.Exceptions;
 using OrderManagement.Infrastructure.Persistence;
 
 namespace OrderManagement.Api.Persistence

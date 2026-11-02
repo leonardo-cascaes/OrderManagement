@@ -1,6 +1,8 @@
 ﻿using MediatR;
 using OrderManagement.Application.Common;
+using OrderManagement.Application.Common.Exceptions;
 using OrderManagement.Application.Interfaces.Repositories;
+using OrderManagement.Application.Persistence;
 using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.Exceptions;
 
@@ -11,14 +13,20 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
     {
         private readonly ICustomerRepository _customerRepository;
         private readonly IProductRepository _productRepository;
+        private readonly IOrderRepository _orderRepository;
+        private readonly IUnitOfWork _unitOfWork;
 
         public CreateOrderHandler(
             ICustomerRepository customerRepository,
-            IProductRepository productRepository
+            IProductRepository productRepository,
+            IOrderRepository orderRepository,
+            IUnitOfWork unitOfWork
         )
         {
             _customerRepository = customerRepository;
             _productRepository = productRepository;
+            _orderRepository = orderRepository;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task<Result<Order>> Handle(CreateOrderCommand command, CancellationToken cancellationToken)
@@ -41,11 +49,21 @@ namespace OrderManagement.Application.Orders.Commands.CreateOrder
             }
             catch (InsufficientStockException ex)
             {
-
                 return Result<Order>.Failure(ex.Message, ResultErrorType.Conflict);
             }
 
             order.AddItem(product.Id, command.Quantity, product.Price);
+
+            _orderRepository.Add(order);
+
+            try
+            {
+                await _unitOfWork.SaveChangesAsync(cancellationToken);
+            }
+            catch (ConcurrencyException ex)
+            {
+                return Result<Order>.Failure(ex.Message, ResultErrorType.Conflict);
+            }
 
             return Result<Order>.Success(order);
         }

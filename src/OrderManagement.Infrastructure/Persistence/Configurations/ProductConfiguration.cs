@@ -26,7 +26,8 @@ namespace OrderManagement.Infrastructure.Persistence.Configurations
 
             builder.Property(product => product.Stock)
                 .HasColumnName("stock")
-                .IsRequired();
+                .IsRequired()
+                .IsConcurrencyToken();
 
             builder.Property(product => product.CreatedAt)
                 .HasColumnName("created_at")

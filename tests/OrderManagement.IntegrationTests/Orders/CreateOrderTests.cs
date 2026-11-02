@@ -9,7 +9,6 @@ using OrderManagement.Domain.Enums;
 using OrderManagement.IntegrationTests.Infrastructure;
 using System.Net;
 using System.Net.Http.Json;
-using System.Text.Json;
 
 namespace OrderManagement.IntegrationTests.Orders
 {

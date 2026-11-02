@@ -3,8 +3,10 @@ using Microsoft.AspNetCore.Mvc.Testing;
 using Microsoft.AspNetCore.TestHost;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using OrderManagement.Application.Interfaces.Repositories;
+using OrderManagement.Application.Persistence;
 
 namespace OrderManagement.IntegrationTests.Infrastructure;
 
@@ -15,9 +17,15 @@ public class CustomWebApplicationFactory
     {
         builder.ConfigureTestServices(services =>
         {
-            services.AddScoped<ICustomerRepository, CustomerRepositoryStub>();
+            services.RemoveAll<ICustomerRepository>();
+            services.RemoveAll<IProductRepository>();
+            services.RemoveAll<IOrderRepository>();
+            services.RemoveAll<IUnitOfWork>();
 
+            services.AddScoped<ICustomerRepository, CustomerRepositoryStub>();
             services.AddScoped<IProductRepository, ProductRepositoryStub>();
+            services.AddScoped<IOrderRepository, OrderRepositoryStub>();
+            services.AddScoped<IUnitOfWork, UnitOfWorkStub>();
         });
     }
 

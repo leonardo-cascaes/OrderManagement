@@ -4,8 +4,9 @@ using OrderManagement.Application.Interfaces.Repositories;
 using OrderManagement.Application.Persistence;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Persistence.Repositories;
+using OrderManagement.IntegrationTests.TestSupport.Factories;
 
-namespace OrderManagement.IntegrationTests.Infrastructure;
+namespace OrderManagement.IntegrationTests.Infrastructure.DependencyInjection;
 
 public class SqliteWebApplicationFactoryTests
 {

@@ -5,7 +5,7 @@ using OrderManagement.Application.Common.Exceptions;
 using OrderManagement.Domain.Entities;
 using OrderManagement.Infrastructure.Persistence;
 
-namespace OrderManagement.IntegrationTests.Infrastructure.Persistence;
+namespace OrderManagement.IntegrationTests.Infrastructure.Persistence.Concurrency;
 
 public class ProductConcurrencyTests
 {

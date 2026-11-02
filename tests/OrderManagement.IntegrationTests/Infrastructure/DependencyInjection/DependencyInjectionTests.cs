@@ -4,8 +4,9 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
 using OrderManagement.Infrastructure.Persistence;
+using OrderManagement.IntegrationTests.TestSupport.Factories;
 
-namespace OrderManagement.IntegrationTests.Infrastructure
+namespace OrderManagement.IntegrationTests.Infrastructure.DependencyInjection
 {
     public class DependencyInjectionTests
         : IClassFixture<CustomWebApplicationFactory>

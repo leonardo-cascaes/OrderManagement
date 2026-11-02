@@ -7,8 +7,9 @@ using Microsoft.Extensions.DependencyInjection.Extensions;
 using Microsoft.Extensions.Hosting;
 using OrderManagement.Application.Interfaces.Repositories;
 using OrderManagement.Application.Persistence;
+using OrderManagement.IntegrationTests.TestSupport.Stubs;
 
-namespace OrderManagement.IntegrationTests.Infrastructure;
+namespace OrderManagement.IntegrationTests.TestSupport.Factories;
 
 public class CustomWebApplicationFactory
     : WebApplicationFactory<Program>

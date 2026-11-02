@@ -1,6 +1,6 @@
 ﻿using OrderManagement.Application.Persistence;
 
-namespace OrderManagement.IntegrationTests.Infrastructure
+namespace OrderManagement.IntegrationTests.TestSupport.Stubs
 {
     public class UnitOfWorkStub : IUnitOfWork
     {

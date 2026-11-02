@@ -10,6 +10,7 @@ using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.Enums;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.IntegrationTests.Infrastructure;
+using OrderManagement.IntegrationTests.TestSupport.Factories;
 using System.Net;
 using System.Net.Http.Json;
 

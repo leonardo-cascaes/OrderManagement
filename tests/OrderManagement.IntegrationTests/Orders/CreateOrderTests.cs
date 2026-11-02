@@ -6,7 +6,8 @@ using OrderManagement.Api.Models.Orders;
 using OrderManagement.Application.Interfaces.Repositories;
 using OrderManagement.Domain.Entities;
 using OrderManagement.Domain.Enums;
-using OrderManagement.IntegrationTests.Infrastructure;
+using OrderManagement.IntegrationTests.TestSupport.Factories;
+using OrderManagement.IntegrationTests.TestSupport.Stubs;
 using System.Net;
 using System.Net.Http.Json;
 

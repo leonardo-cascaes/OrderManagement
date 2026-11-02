@@ -1,7 +1,7 @@
 ﻿using OrderManagement.Application.Interfaces.Repositories;
 using OrderManagement.Domain.Entities;
 
-namespace OrderManagement.IntegrationTests.Infrastructure
+namespace OrderManagement.IntegrationTests.TestSupport.Stubs
 {
     internal class OrderRepositoryStub : IOrderRepository
     {

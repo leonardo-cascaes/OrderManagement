@@ -11,7 +11,7 @@ using Microsoft.Extensions.Hosting;
 using OrderManagement.Infrastructure.Persistence;
 using System.Data.Common;
 
-namespace OrderManagement.IntegrationTests.Infrastructure;
+namespace OrderManagement.IntegrationTests.TestSupport.Factories;
 
 public class SqliteWebApplicationFactory : WebApplicationFactory<Program>
 {

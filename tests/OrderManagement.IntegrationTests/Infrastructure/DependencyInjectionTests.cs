@@ -3,6 +3,7 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using OrderManagement.Application.Orders.Commands.CreateOrder;
+using OrderManagement.Infrastructure.Persistence;
 
 namespace OrderManagement.IntegrationTests.Infrastructure
 {
@@ -76,6 +77,21 @@ namespace OrderManagement.IntegrationTests.Infrastructure
             // Assert
             validator.Should().NotBeNull();
             validator.Should().BeOfType<CreateOrderValidator>();
+        }
+
+        [Fact]
+        public void Should_resolve_dbcontext_with_postgresql_provider()
+        {
+            // Arrange
+            using var scope = _factory.Services.CreateScope();
+
+            // Act
+            var context = scope.ServiceProvider.GetRequiredService<OrderManagementDbContext>();
+
+            // Assert
+            context.Should().NotBeNull();
+
+            context.Database.ProviderName.Should().Be("Npgsql.EntityFrameworkCore.PostgreSQL");
         }
     }
 }

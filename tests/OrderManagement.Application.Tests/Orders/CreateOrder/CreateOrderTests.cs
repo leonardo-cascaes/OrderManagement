@@ -304,6 +304,16 @@ namespace OrderManagement.Application.Tests.Orders.CreateOrder
                 AddedOrder = order;
                 AddCallCount++;
             }
+
+            public Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<Order?>(null);
+            }
+
+            public Task<IReadOnlyCollection<Order>> GetAllAsync(CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyCollection<Order>>(Array.Empty<Order>());
+            }
         }
 
         private sealed class UnitOfWorkStub : IUnitOfWork

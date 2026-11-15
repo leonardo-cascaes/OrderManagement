@@ -14,7 +14,7 @@ using OrderManagement.IntegrationTests.TestSupport.Factories;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace OrderManagement.IntegrationTests.Orders;
+namespace OrderManagement.IntegrationTests.Orders.CreateOrder;
 
 public class CreateOrderApiPersistenceTests
 {

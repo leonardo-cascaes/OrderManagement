@@ -14,7 +14,7 @@ using OrderManagement.Domain.Enums;
 using OrderManagement.Infrastructure.Persistence;
 using OrderManagement.Infrastructure.Persistence.Repositories;
 
-namespace OrderManagement.IntegrationTests.Orders;
+namespace OrderManagement.IntegrationTests.Orders.CreateOrder;
 
 public class CreateOrderPersistenceTests
 {

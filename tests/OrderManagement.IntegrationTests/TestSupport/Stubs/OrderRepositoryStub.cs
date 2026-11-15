@@ -8,5 +8,16 @@ namespace OrderManagement.IntegrationTests.TestSupport.Stubs
         public void Add(Order order)
         {
         }
+
+        public Task<Order?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<Order?>(null);
+        }
+
+
+        public Task<IReadOnlyCollection<Order>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IReadOnlyCollection<Order>>(Array.Empty<Order>());
+        }
     }
 }

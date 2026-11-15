@@ -11,7 +11,7 @@ using OrderManagement.IntegrationTests.TestSupport.Stubs;
 using System.Net;
 using System.Net.Http.Json;
 
-namespace OrderManagement.IntegrationTests.Orders
+namespace OrderManagement.IntegrationTests.Orders.CreateOrder
 {
     public class CreateOrderTests
         : IClassFixture<CustomWebApplicationFactory>

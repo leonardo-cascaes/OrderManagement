@@ -13,13 +13,23 @@ namespace OrderManagement.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<Customer?> GetByIdAsync(
-            Guid id,
-            CancellationToken cancellationToken = default
+        public void Add(Customer customer)
+        {
+            _context.Customers.Add(customer);
+        }
+
+        public async Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default
         )
         {
             return await _context.Customers
                 .FirstOrDefaultAsync(customer => customer.Id == id, cancellationToken);
+        }
+
+        public async Task<IReadOnlyCollection<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return await _context.Customers
+                .AsNoTracking()
+                .ToListAsync(cancellationToken);
         }
     }
 }

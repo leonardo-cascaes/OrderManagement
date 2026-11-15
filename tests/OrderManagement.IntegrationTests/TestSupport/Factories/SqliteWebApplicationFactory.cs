@@ -48,13 +48,22 @@ public class SqliteWebApplicationFactory : WebApplicationFactory<Program>
             configuration.AddInMemoryCollection(
                 new Dictionary<string, string?>
                 {
-                    {
-                        "ConnectionStrings:OrderManagement",
-                        "Host=localhost;Port=5432;Database=ordermanagement;Username=test;Password=test"
-                    }
+                {
+                    "ConnectionStrings:OrderManagement",
+                    "Host=localhost;Port=5432;Database=ordermanagement;Username=test;Password=test"
+                }
                 });
         });
 
-        return base.CreateHost(builder);
+        var host = base.CreateHost(builder);
+
+        using var scope = host.Services.CreateScope();
+
+        var dbContext = scope.ServiceProvider
+            .GetRequiredService<OrderManagementDbContext>();
+
+        dbContext.Database.EnsureCreated();
+
+        return host;
     }
 }

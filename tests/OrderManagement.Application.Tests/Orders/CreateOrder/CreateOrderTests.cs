@@ -254,9 +254,18 @@ namespace OrderManagement.Application.Tests.Orders.CreateOrder
                 _customer = customer;
             }
 
+            public void Add(Customer customer)
+            {
+            }
+
             public Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(_customer);
+            }
+
+            public Task<IReadOnlyCollection<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyCollection<Customer>>(Array.Empty<Customer>());
             }
         }
 
@@ -269,9 +278,18 @@ namespace OrderManagement.Application.Tests.Orders.CreateOrder
                 _product = product;
             }
 
+            public void Add(Product product)
+            {
+            }
+
             public Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
             {
                 return Task.FromResult(_product);
+            }
+
+            public Task<IReadOnlyCollection<Product>> GetAllAsync(CancellationToken cancellationToken = default)
+            {
+                return Task.FromResult<IReadOnlyCollection<Product>>(Array.Empty<Product>());
             }
         }
 

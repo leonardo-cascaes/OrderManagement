@@ -12,9 +12,18 @@ namespace OrderManagement.IntegrationTests.TestSupport.Stubs
             _product = product;
         }
 
+        public void Add(Product product)
+        {
+        }
+
         public Task<Product?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(_product);
+        }
+
+        public Task<IReadOnlyCollection<Product>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IReadOnlyCollection<Product>>(Array.Empty<Product>());
         }
     }
 }

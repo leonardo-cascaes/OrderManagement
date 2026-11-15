@@ -12,9 +12,18 @@ namespace OrderManagement.IntegrationTests.TestSupport.Stubs
             _customer = customer;
         }
 
+        public void Add(Customer customer)
+        {
+        }
+
         public Task<Customer?> GetByIdAsync(Guid id, CancellationToken cancellationToken = default)
         {
             return Task.FromResult(_customer);
+        }
+
+        public Task<IReadOnlyCollection<Customer>> GetAllAsync(CancellationToken cancellationToken = default)
+        {
+            return Task.FromResult<IReadOnlyCollection<Customer>>(Array.Empty<Customer>());
         }
     }
 }
